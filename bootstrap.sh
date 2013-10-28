@@ -1,7 +1,11 @@
 #!/bin/sh
 
-apt-get update
+PROJECT_NAME=$1
+PHP_VERSION=$2
 
+# System
+
+apt-get update
 apt-get install -y vim
 
 # Apache
@@ -12,9 +16,9 @@ echo "ServerName localhost" > /etc/apache2/httpd.conf
 
 VHOST=$(cat <<EOF
 <VirtualHost *:80>
-    ServerName $1.dev
-    DocumentRoot /var/www/$1/public
-    <Directory "/var/www/$1/public">
+    ServerName $PROJECT_NAME.dev
+    DocumentRoot /var/www/$PROJECT_NAME/public
+    <Directory "/var/www/$PROJECT_NAME/public">
         AllowOverride All
     </Directory>
 </VirtualHost>
@@ -30,10 +34,10 @@ service apache2 restart
 
 apt-get install -y libapache2-mod-php5
 
-if [ $2 = "5.5" ]; then
+if [ $PHP_VERSION = "5.5" ]; then
 	apt-get install -y python-software-properties
 	add-apt-repository -y ppa:ondrej/php5
-elif [ $2 = "5.4" ]; then
+elif [ $PHP_VERSION = "5.4" ]; then
 	apt-get install -y python-software-properties
 	add-apt-repository -y ppa:ondrej/php5-oldstable
 fi
@@ -55,9 +59,10 @@ apt-get install -y mysql-server-5.5
 sed -i 's/bind-address\t\t= 127.0.0.1/bind-address\t\t= 0.0.0.0/' /etc/mysql/my.cnf
 service mysql restart
 
-mysql -u root -e "CREATE DATABASE $1 DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_unicode_ci;"
+mysql -u root -e "CREATE DATABASE \`$PROJECT_NAME\` DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_unicode_ci;"
 
 HOST=$(ifconfig eth1 | grep 'inet addr' | awk -F : '{print $2}' | awk '{print $1}' | sed 's/.[0-9]*$/.%/')
 
-mysql -u root -e "GRANT ALL ON $1.* TO '$1'@'$HOST' IDENTIFIED BY '$1';"
+mysql -u root -e "GRANT ALL ON \`$PROJECT_NAME\`.* TO '$PROJECT_NAME'@'localhost' IDENTIFIED BY '$PROJECT_NAME';"
+mysql -u root -e "GRANT ALL ON \`$PROJECT_NAME\`.* TO '$PROJECT_NAME'@'$HOST' IDENTIFIED BY '$PROJECT_NAME';"
 mysql -u root -e "FLUSH PRIVILEGES;"
