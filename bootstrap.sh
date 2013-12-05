@@ -46,6 +46,9 @@ apt-get update
 apt-get install -y php5
 apt-get install -y php5-mysql
 apt-get install -y php5-mcrypt
+apt-get install -y php5-curl
+apt-get install -y php5-gd
+apt-get install -y php5-imagick
 
 service apache2 restart
 
