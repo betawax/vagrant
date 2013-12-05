@@ -3,6 +3,8 @@
 PROJECT_NAME=$1
 PHP_VERSION=$2
 
+export DEBIAN_FRONTEND=noninteractive
+
 # System
 
 apt-get update
@@ -56,7 +58,6 @@ rm -f /var/www/index.html
 
 # MySQL
 
-export DEBIAN_FRONTEND=noninteractive
 apt-get install -y mysql-server-5.5
 
 sed -i 's/bind-address\t\t= 127.0.0.1/bind-address\t\t= 0.0.0.0/' /etc/mysql/my.cnf
@@ -69,3 +70,10 @@ HOST=$(ifconfig eth1 | grep 'inet addr' | awk -F : '{print $2}' | awk '{print $1
 mysql -u root -e "GRANT ALL ON \`$PROJECT_NAME\`.* TO '$PROJECT_NAME'@'localhost' IDENTIFIED BY '$PROJECT_NAME';"
 mysql -u root -e "GRANT ALL ON \`$PROJECT_NAME\`.* TO '$PROJECT_NAME'@'$HOST' IDENTIFIED BY '$PROJECT_NAME';"
 mysql -u root -e "FLUSH PRIVILEGES;"
+
+# Mail
+
+echo postfix postfix/mailname string $PROJECT_NAME.dev | debconf-set-selections
+echo postfix postfix/main_mailer_type string 'Internet Site' | debconf-set-selections
+
+apt-get install -y postfix
