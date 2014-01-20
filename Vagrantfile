@@ -11,6 +11,6 @@ Vagrant.configure("2") do |config|
   config.vm.network :private_network, ip: ip_address
   config.vm.synced_folder "./", "/var/www/#{project_name}", owner: "www-data", group: "www-data"
   
-  config.vm.provision :shell, path: "bootstrap.sh", :args => "#{project_name} #{php_version}"
+  config.vm.provision :shell, path: "bootstrap.sh", :args => "Vagrant #{project_name} #{php_version}"
   
 end

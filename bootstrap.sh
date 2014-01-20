@@ -1,7 +1,12 @@
 #!/bin/sh
 
-PROJECT_NAME=$1
-PHP_VERSION=$2
+if [ "$1" != "Vagrant" ]; then
+	echo "The provisioning script should not be called directly!"
+	exit 1
+fi
+
+PROJECT_NAME=$2
+PHP_VERSION=$3
 
 export DEBIAN_FRONTEND=noninteractive
 
