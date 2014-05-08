@@ -17,6 +17,10 @@ apt-get install -y curl
 apt-get install -y git-core
 apt-get install -y vim
 
+# Aliases
+
+echo "alias artisan='php artisan'" >> /home/vagrant/.bash_aliases
+
 # Apache
 
 apt-get install -y apache2
@@ -59,7 +63,12 @@ apt-get install -y php5-gd
 apt-get install -y php5-imagick
 apt-get install -y php5-mcrypt
 apt-get install -y php5-mysql
+apt-get install -y php5-sqlite
 apt-get install -y php5-xdebug
+apt-get install -y php5-xsl
+
+sed -i 's/;date.timezone =/date.timezone = UTC/' /etc/php5/apache2/php.ini
+sed -i 's/;date.timezone =/date.timezone = UTC/' /etc/php5/cli/php.ini
 
 service apache2 restart
 
@@ -80,7 +89,11 @@ mysql -u root -e "GRANT ALL ON \`$PROJECT_NAME\`.* TO '$PROJECT_NAME'@'localhost
 mysql -u root -e "GRANT ALL ON \`$PROJECT_NAME\`.* TO '$PROJECT_NAME'@'$HOST' IDENTIFIED BY '$PROJECT_NAME';"
 mysql -u root -e "FLUSH PRIVILEGES;"
 
-# Mail
+# SQLite
+
+apt-get install -y sqlite
+
+# Postfix
 
 echo postfix postfix/mailname string $PROJECT_NAME.dev | debconf-set-selections
 echo postfix postfix/main_mailer_type string 'Internet Site' | debconf-set-selections
@@ -92,5 +105,11 @@ curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 
 # PHPUnit
-curl -O https://phar.phpunit.de/phpunit.phar && chmod 755 phpunit.phar
+curl -O https://phar.phpunit.de/phpunit.phar
+chmod 755 phpunit.phar
 mv phpunit.phar /usr/local/bin/phpunit
+
+# phpDocumentor
+curl -OL https://github.com/phpDocumentor/phpDocumentor2/releases/download/v2.3.2/phpDocumentor.phar
+chmod 755 phpDocumentor.phar
+mv phpDocumentor.phar /usr/local/bin/phpdoc
