@@ -108,8 +108,3 @@ mv composer.phar /usr/local/bin/composer
 curl -O https://phar.phpunit.de/phpunit.phar
 chmod 755 phpunit.phar
 mv phpunit.phar /usr/local/bin/phpunit
-
-# phpDocumentor
-curl -OL https://github.com/phpDocumentor/phpDocumentor2/releases/download/v2.3.2/phpDocumentor.phar
-chmod 755 phpDocumentor.phar
-mv phpDocumentor.phar /usr/local/bin/phpdoc
