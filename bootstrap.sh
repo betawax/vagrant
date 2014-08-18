@@ -69,6 +69,8 @@ apt-get install -y php5-xsl
 
 sed -i 's/;date.timezone =/date.timezone = UTC/' /etc/php5/apache2/php.ini
 sed -i 's/;date.timezone =/date.timezone = UTC/' /etc/php5/cli/php.ini
+sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 32M/' /etc/php5/apache2/php.ini
+sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 32M/' /etc/php5/cli/php.ini
 
 service apache2 restart
 
