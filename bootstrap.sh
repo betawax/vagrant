@@ -57,6 +57,7 @@ fi
 
 apt-get update
 apt-get install -y php5
+apt-get install -y php-apc
 apt-get install -y php5-cli
 apt-get install -y php5-curl
 apt-get install -y php5-gd
