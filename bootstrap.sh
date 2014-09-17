@@ -46,12 +46,13 @@ service apache2 restart
 # PHP
 
 apt-get install -y libapache2-mod-php5
+apt-get install -y python-software-properties
 
-if [ $PHP_VERSION = "5.5" ]; then
-	apt-get install -y python-software-properties
+if [ $PHP_VERSION = "5.6" ]; then
+	add-apt-repository -y ppa:ondrej/php5-5.6
+elif [ $PHP_VERSION = "5.5" ]; then
 	add-apt-repository -y ppa:ondrej/php5
 elif [ $PHP_VERSION = "5.4" ]; then
-	apt-get install -y python-software-properties
 	add-apt-repository -y ppa:ondrej/php5-oldstable
 fi
 
@@ -75,6 +76,7 @@ sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 32M/' /etc/php5/cli/php
 
 service apache2 restart
 
+rm -rf /var/www/html
 rm -f /var/www/index.html
 
 # MySQL

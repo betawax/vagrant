@@ -1,26 +1,26 @@
 # Vagrant Stack
 
-The Vagrant Stack I use for local PHP development, focused on the following tasks:
+This is the Vagrant Stack I use for local PHP development, it's focused on the following tasks:
 
-- Get up and running with Vagrant in minutes using a simple shell script
-- Obtain the PHP version the project needs to rely on by simply specifing it
-- Easily access the database from the host system
+- Get up and running with Vagrant in minutes by using a simple shell script
+- Obtain the PHP version that the project needs to rely on by simply specifying it
+- Easily access the database from the host system, e.g. via Sequel Pro
 
 ## Usage
 
 Download the `Vagrantfile` and `bootstrap.sh` to your project directory:
 
-	curl -O https://raw.github.com/betawax/vagrant-stack/master/Vagrantfile
-	curl -O https://raw.github.com/betawax/vagrant-stack/master/bootstrap.sh
+	curl -O https://raw.githubusercontent.com/betawax/vagrant-stack/master/Vagrantfile
+	curl -O https://raw.githubusercontent.com/betawax/vagrant-stack/master/bootstrap.sh
 
-Open up the `Vagrantfile` and define your project name and the required PHP version:
+Next open up the `Vagrantfile` and define a project name shortcut and the PHP version to use:
 
 	project_name = "foobar"
-	php_version = "5.5"
+	php_version = "5.6"
 
-Possible values of the `php_version` are `5.5`, `5.4` or `5.3`.
+The project name shortcut will be used to name the project directory and database. Possible values for the PHP version are `5.6`, `5.5`, `5.4` or `5.3`. Optionally you can also change the IP address of the virtual machine that will be used as your database host.
 
-Now open up `bootstrap.sh` and adjust it to your needs.
+Now you can open up `bootstrap.sh` and adjust it to your needs, or leave everything as it is for a default LAMP environment.
 
 And finally when you're done, start up Vagrant:
 
@@ -28,7 +28,7 @@ And finally when you're done, start up Vagrant:
 
 ## Access the guest system
 
-By default, the `bootstrap.sh` will create a virtual host, a MySQL database and a database user based on the project name you defined in the `Vagrantfile`.
+By default, the `bootstrap.sh` will create a virtual host, a MySQL database and a database user based on the project name shortcut you defined in the `Vagrantfile`.
 
 You can access the virtual host on your host system by simply adding it to your `/etc/hosts` file:
 

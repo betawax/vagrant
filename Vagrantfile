@@ -1,7 +1,6 @@
 project_name = "foobar"
-php_version = "5.5"
-
-ip_address = "10.10.10.10"
+php_version  = "5.6"
+ip_address   = "10.10.10.10"
 
 Vagrant.configure("2") do |config|
   
