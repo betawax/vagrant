@@ -66,6 +66,7 @@ apt-get install -y php5-imagick
 apt-get install -y php5-mcrypt
 apt-get install -y php5-mysql
 apt-get install -y php5-sqlite
+apt-get install -y php5-tidy
 apt-get install -y php5-xdebug
 apt-get install -y php5-xsl
 
