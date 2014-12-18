@@ -114,3 +114,11 @@ mv composer.phar /usr/local/bin/composer
 curl -O https://phar.phpunit.de/phpunit.phar
 chmod 755 phpunit.phar
 mv phpunit.phar /usr/local/bin/phpunit
+
+# WP-CLI
+#curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+#chmod 755 wp-cli.phar
+#mv wp-cli.phar /usr/local/bin/wp
+
+# Drush
+#apt-get install -y drush
