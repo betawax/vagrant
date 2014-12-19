@@ -1,5 +1,6 @@
 project_name = "foobar"
 php_version  = "5.6"
+web_server   = "apache"
 ip_address   = "10.10.10.10"
 
 Vagrant.configure("2") do |config|
@@ -12,6 +13,6 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "./", "/var/www/#{project_name}", owner: "vagrant", group: "www-data", mount_options: ["dmode=775,fmode=664"]
   #config.vm.synced_folder "./", "/var/www/#{project_name}", type: "nfs"
   
-  config.vm.provision :shell, path: "bootstrap.sh", :args => "Vagrant #{project_name} #{php_version}"
+  config.vm.provision :shell, path: "bootstrap.sh", :args => "Vagrant #{project_name} #{php_version} #{web_server}"
   
 end

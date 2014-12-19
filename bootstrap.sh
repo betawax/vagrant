@@ -7,10 +7,11 @@ fi
 
 PROJECT_NAME=$2
 PHP_VERSION=$3
-
-export DEBIAN_FRONTEND=noninteractive
+WEB_SERVER=$4
 
 # System
+
+export DEBIAN_FRONTEND=noninteractive
 
 apt-get update
 apt-get install -y curl
@@ -21,9 +22,39 @@ apt-get install -y vim
 
 echo "alias artisan='php artisan'" >> /home/vagrant/.bash_aliases
 
+# PHP
+
+apt-get install -y python-software-properties
+
+if [ $PHP_VERSION = "5.6" ]; then
+	add-apt-repository -y ppa:ondrej/php5-5.6
+elif [ $PHP_VERSION = "5.5" ]; then
+	add-apt-repository -y ppa:ondrej/php5
+elif [ $PHP_VERSION = "5.4" ]; then
+	add-apt-repository -y ppa:ondrej/php5-oldstable
+fi
+
+apt-get update
+apt-get install -y php-apc
+apt-get install -y php5-cli
+apt-get install -y php5-curl
+apt-get install -y php5-gd
+apt-get install -y php5-imagick
+apt-get install -y php5-mcrypt
+apt-get install -y php5-mysql
+apt-get install -y php5-sqlite
+apt-get install -y php5-tidy
+apt-get install -y php5-xdebug
+apt-get install -y php5-xsl
+
+sed -i 's/;date.timezone =/date.timezone = UTC/' /etc/php5/cli/php.ini
+
 # Apache
 
+if [ $WEB_SERVER = "apache" ]; then
+
 apt-get install -y apache2
+apt-get install -y libapache2-mod-php5
 
 echo "ServerName localhost" > /etc/apache2/httpd.conf
 
@@ -38,47 +69,70 @@ VHOST=$(cat <<EOF
 EOF
 )
 
-echo "$VHOST" > /etc/apache2/sites-available/default
+echo "$VHOST" > /etc/apache2/sites-available/000-default.conf
+
+sed -i 's/;date.timezone =/date.timezone = UTC/' /etc/php5/apache2/php.ini
+sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 32M/' /etc/php5/apache2/php.ini
+
+rm -rf /var/www/html
+rm -f /var/www/index.html
 
 a2enmod rewrite
 service apache2 restart
 
-# PHP
-
-apt-get install -y libapache2-mod-php5
-apt-get install -y python-software-properties
-
-if [ $PHP_VERSION = "5.6" ]; then
-	add-apt-repository -y ppa:ondrej/php5-5.6
-elif [ $PHP_VERSION = "5.5" ]; then
-	add-apt-repository -y ppa:ondrej/php5
-elif [ $PHP_VERSION = "5.4" ]; then
-	add-apt-repository -y ppa:ondrej/php5-oldstable
 fi
 
-apt-get update
-apt-get install -y php5
-apt-get install -y php-apc
-apt-get install -y php5-cli
-apt-get install -y php5-curl
-apt-get install -y php5-gd
-apt-get install -y php5-imagick
-apt-get install -y php5-mcrypt
-apt-get install -y php5-mysql
-apt-get install -y php5-sqlite
-apt-get install -y php5-tidy
-apt-get install -y php5-xdebug
-apt-get install -y php5-xsl
+# nginx
 
-sed -i 's/;date.timezone =/date.timezone = UTC/' /etc/php5/apache2/php.ini
-sed -i 's/;date.timezone =/date.timezone = UTC/' /etc/php5/cli/php.ini
-sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 32M/' /etc/php5/apache2/php.ini
-sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 32M/' /etc/php5/cli/php.ini
+if [ $WEB_SERVER = "nginx" ]; then
 
-service apache2 restart
+apt-get install -y nginx
+apt-get install -y php5-fpm
 
-rm -rf /var/www/html
-rm -f /var/www/index.html
+SERVER=$(cat <<EOF
+server {
+    
+    listen 80;
+    server_name $PROJECT_NAME.dev;
+    root /var/www/$PROJECT_NAME/public;
+    
+    index index.html index.php;
+    charset utf-8;
+    
+    location / {
+        try_files \$uri \$uri/ /index.php?\$query_string;
+    }
+    
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+    
+    error_page 404 /index.php;
+    
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        fastcgi_intercept_errors on;
+        fastcgi_buffer_size 16k;
+        fastcgi_buffers 4 16k;
+    }
+    
+    location ~ /\.ht {
+        deny all;
+    }
+    
+}
+EOF
+)
+
+echo "$SERVER" > /etc/nginx/sites-available/default
+
+service nginx restart
+service php5-fpm restart
+
+fi
 
 # MySQL
 
