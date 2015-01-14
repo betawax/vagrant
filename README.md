@@ -39,6 +39,12 @@ The MySQL database can be accessed from your host system by using the guest's IP
 
 	mysql -h 10.10.10.10 -u foobar -pfoobar foobar
 
+## Resources
+
+- [Laravel Homestead provision script](https://github.com/laravel/settler/blob/master/scripts/provision.sh)
+- [Laravel Homestead nginx server config](https://github.com/laravel/homestead/blob/master/scripts/serve.sh)
+- [Vaprobash pro​visioning scripts](https://github.com/fideloper/Vaprobash)
+
 ## License
 
 Licensed under the MIT license.
