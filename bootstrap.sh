@@ -18,6 +18,11 @@ apt-get install -y curl
 apt-get install -y git-core
 apt-get install -y vim
 
+# Locales
+
+locale-gen de_DE
+locale-gen de_DE.UTF-8
+
 # Aliases
 
 echo "alias artisan='php artisan'" >> /home/vagrant/.bash_aliases
