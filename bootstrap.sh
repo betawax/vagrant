@@ -74,7 +74,7 @@ VHOST=$(cat <<EOF
 EOF
 )
 
-echo "$VHOST" > /etc/apache2/sites-available/000-default.conf
+echo "$VHOST" > /etc/apache2/sites-available/default
 
 sed -i 's/;date.timezone =/date.timezone = UTC/' /etc/php5/apache2/php.ini
 sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 32M/' /etc/php5/apache2/php.ini
