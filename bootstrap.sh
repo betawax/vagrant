@@ -177,6 +177,11 @@ curl -O https://phar.phpunit.de/phpunit.phar
 chmod 755 phpunit.phar
 mv phpunit.phar /usr/local/bin/phpunit
 
+# PHP Coding Standards Fixer
+#curl -O http://get.sensiolabs.org/php-cs-fixer.phar
+#chmod 755 php-cs-fixer.phar
+#mv php-cs-fixer.phar /usr/local/bin/php-cs-fixer
+
 # WP-CLI
 #curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 #chmod 755 wp-cli.phar
