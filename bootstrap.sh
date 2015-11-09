@@ -172,10 +172,17 @@ apt-get install -y postfix
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 
+# npm
+curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+apt-get install -y nodejs
+
+# gulp
+#npm install --global gulp
+
 # PHPUnit
-curl -O https://phar.phpunit.de/phpunit.phar
-chmod 755 phpunit.phar
-mv phpunit.phar /usr/local/bin/phpunit
+#curl -O https://phar.phpunit.de/phpunit.phar
+#chmod 755 phpunit.phar
+#mv phpunit.phar /usr/local/bin/phpunit
 
 # PHP Coding Standards Fixer
 #curl -O http://get.sensiolabs.org/php-cs-fixer.phar
