@@ -8,6 +8,7 @@ fi
 PROJECT_NAME=$2
 PHP_VERSION=$3
 WEB_SERVER=$4
+DOCUMENT_ROOT=$5
 
 # System
 
@@ -66,8 +67,8 @@ echo "ServerName localhost" > /etc/apache2/httpd.conf
 VHOST=$(cat <<EOF
 <VirtualHost *:80>
     ServerName $PROJECT_NAME.dev
-    DocumentRoot /var/www/$PROJECT_NAME/public
-    <Directory "/var/www/$PROJECT_NAME/public">
+    DocumentRoot /var/www/$PROJECT_NAME/$DOCUMENT_ROOT
+    <Directory "/var/www/$PROJECT_NAME/$DOCUMENT_ROOT">
         AllowOverride All
     </Directory>
 </VirtualHost>
@@ -102,7 +103,7 @@ server {
     
     listen 80;
     server_name $PROJECT_NAME.dev;
-    root /var/www/$PROJECT_NAME/public;
+    root /var/www/$PROJECT_NAME/$DOCUMENT_ROOT;
     
     index index.html index.php;
     charset utf-8;
