@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# ==============================================================================
+# Vagrant
+# ==============================================================================
+
 if [ "$1" != "Vagrant" ]; then
 	echo "The provisioning script should not be called directly!"
 	exit 1
@@ -10,7 +14,9 @@ PHP_VERSION=$3
 WEB_SERVER=$4
 DOCUMENT_ROOT=$5
 
+# ==============================================================================
 # System
+# ==============================================================================
 
 export DEBIAN_FRONTEND=noninteractive
 
@@ -28,7 +34,9 @@ locale-gen de_DE.UTF-8
 
 echo "alias artisan='php artisan'" >> /home/vagrant/.bash_aliases
 
+# ==============================================================================
 # PHP
+# ==============================================================================
 
 apt-get install -y python-software-properties
 
@@ -55,7 +63,9 @@ apt-get install -y php5-xsl
 
 sed -i 's/;date.timezone =/date.timezone = UTC/' /etc/php5/cli/php.ini
 
+# ==============================================================================
 # Apache
+# ==============================================================================
 
 if [ $WEB_SERVER = "apache" ]; then
 
@@ -91,7 +101,9 @@ service apache2 restart
 
 fi
 
+# ==============================================================================
 # nginx
+# ==============================================================================
 
 if [ $WEB_SERVER = "nginx" ]; then
 
@@ -143,7 +155,9 @@ service php5-fpm restart
 
 fi
 
+# ==============================================================================
 # MySQL
+# ==============================================================================
 
 apt-get install -y mysql-server-5.5
 
@@ -158,16 +172,24 @@ mysql -u root -e "GRANT ALL ON \`$PROJECT_NAME\`.* TO '$PROJECT_NAME'@'localhost
 mysql -u root -e "GRANT ALL ON \`$PROJECT_NAME\`.* TO '$PROJECT_NAME'@'$HOST' IDENTIFIED BY '$PROJECT_NAME';"
 mysql -u root -e "FLUSH PRIVILEGES;"
 
+# ==============================================================================
 # SQLite
+# ==============================================================================
 
 apt-get install -y sqlite
 
+# ==============================================================================
 # Postfix
+# ==============================================================================
 
 echo postfix postfix/mailname string $PROJECT_NAME.dev | debconf-set-selections
 echo postfix postfix/main_mailer_type string 'Internet Site' | debconf-set-selections
 
 apt-get install -y postfix
+
+# ==============================================================================
+# Misc
+# ==============================================================================
 
 # Composer
 curl -sS https://getcomposer.org/installer | php
