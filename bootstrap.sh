@@ -5,8 +5,8 @@
 # ==============================================================================
 
 if [ "$1" != "Vagrant" ]; then
-	echo "The provisioning script should not be called directly!"
-	exit 1
+  echo "The provisioning script should not be called directly!"
+  exit 1
 fi
 
 PROJECT_NAME=$2
@@ -41,11 +41,11 @@ echo "alias artisan='php artisan'" >> /home/vagrant/.bash_aliases
 apt-get install -y python-software-properties
 
 if [ $PHP_VERSION = "5.6" ]; then
-	add-apt-repository -y ppa:ondrej/php5-5.6
+  add-apt-repository -y ppa:ondrej/php5-5.6
 elif [ $PHP_VERSION = "5.5" ]; then
-	add-apt-repository -y ppa:ondrej/php5
+  add-apt-repository -y ppa:ondrej/php5
 elif [ $PHP_VERSION = "5.4" ]; then
-	add-apt-repository -y ppa:ondrej/php5-oldstable
+  add-apt-repository -y ppa:ondrej/php5-oldstable
 fi
 
 apt-get update
