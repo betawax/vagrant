@@ -188,18 +188,18 @@ echo postfix postfix/main_mailer_type string 'Internet Site' | debconf-set-selec
 apt-get install -y postfix
 
 # ==============================================================================
-# Misc
+# Tools
 # ==============================================================================
 
 # Composer
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 
-# npm
+# Node
 curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 apt-get install -y nodejs
 
-# gulp
+# Gulp
 #npm install --global gulp
 
 # PHPUnit
