@@ -97,6 +97,9 @@ rm -rf /var/www/html
 rm -f /var/www/index.html
 
 a2enmod rewrite
+a2enmod headers
+a2enmod expires
+
 service apache2 restart
 
 fi
