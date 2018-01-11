@@ -24,9 +24,6 @@ apt-get install -y language-pack-de
 # Common Tools
 apt-get install -y git
 
-# Aliases
-echo "alias artisan=\"php artisan\"" >> /home/vagrant/.bash_aliases
-
 # We are no humans
 export DEBIAN_FRONTEND=noninteractive
 
@@ -38,7 +35,7 @@ export DEBIAN_FRONTEND=noninteractive
 add-apt-repository -y ppa:ondrej/php
 apt-get update
 
-# PHP 7.1 common extensions
+# PHP 7.1 Common Extensions
 apt-get install -y php7.1-cli
 apt-get install -y php7.1-curl
 apt-get install -y php7.1-gd
@@ -94,8 +91,6 @@ sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 32M/" /etc/php/7.1/apac
 
 # Please Apache 🙄
 printf "\n\nServerName $PROJECT_SLUG" >> /etc/apache2/apache2.conf
-
-# Restart Apache
 service apache2 restart
 
 # ==============================================================================
@@ -109,7 +104,7 @@ apt-get install -y mysql-server-5.6
 sed -i "s/bind-address\t\t= 127.0.0.1/bind-address\t\t= 0.0.0.0/" /etc/mysql/my.cnf
 service mysql restart
 
-# Get the host address to grant access to
+# Get the host address to grant remote access to
 HOST=$(ifconfig eth1 | grep "inet addr" | awk -F : '{print $2}' | awk '{print $1}' | sed "s/.[0-9]*$/.%/")
 
 # Create a UTF8 database
@@ -124,9 +119,12 @@ mysql -u root -e "FLUSH PRIVILEGES;"
 # Postfix
 # ==============================================================================
 
-# Pre-configure Postfix for mail delivery
-echo postfix postfix/mailname string $PROJECT_SLUG.local | debconf-set-selections
-echo postfix postfix/main_mailer_type string 'Internet Site' | debconf-set-selections
+# Pre-configure Postfix for a silent install
+echo "postfix postfix/mailname string $PROJECT_SLUG.local" | debconf-set-selections
+echo "postfix postfix/main_mailer_type string 'Internet Site'" | debconf-set-selections
 
 # Postfix
 apt-get install -y postfix
+
+# ==============================================================================
+# ==============================================================================
