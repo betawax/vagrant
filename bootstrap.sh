@@ -60,9 +60,24 @@ VHOST=$(cat <<EOF
 <VirtualHost *:80>
     ServerName $PROJECT_SLUG.local
     DocumentRoot /var/www/$PROJECT_SLUG/$DOCUMENT_ROOT
-    <Directory "/var/www/$PROJECT_SLUG/$DOCUMENT_ROOT">
+    <Directory /var/www/$PROJECT_SLUG/$DOCUMENT_ROOT>
         AllowOverride All
     </Directory>
+</VirtualHost>
+EOF
+)
+
+# Default SSL VHost
+VHOST_SSL=$(cat <<EOF
+<VirtualHost *:443>
+    ServerName $PROJECT_SLUG.local
+    DocumentRoot /var/www/$PROJECT_SLUG/$DOCUMENT_ROOT
+    <Directory /var/www/$PROJECT_SLUG/$DOCUMENT_ROOT>
+        AllowOverride All
+    </Directory>
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/$PROJECT_SLUG.crt
+    SSLCertificateKeyFile /etc/ssl/$PROJECT_SLUG.key
 </VirtualHost>
 EOF
 )
@@ -75,6 +90,10 @@ apt-get install -y libapache2-mod-php7.1
 a2enmod rewrite
 a2enmod headers
 a2enmod expires
+a2enmod ssl
+
+# Create a self-signed SSL certificate
+openssl req -x509 -sha256 -newkey rsa:2048 -nodes -keyout /etc/ssl/$PROJECT_SLUG.key -out /etc/ssl/$PROJECT_SLUG.crt -days 365 -subj "/CN=$PROJECT_SLUG.local"
 
 # Clean up
 rm -f /etc/apache2/sites-available/*
@@ -83,7 +102,9 @@ rm -rf /var/www/html
 
 # Create and enable a default VHost
 echo "$VHOST" > /etc/apache2/sites-available/default.conf
+echo "$VHOST_SSL" > /etc/apache2/sites-available/default-ssl.conf
 ln -fs /etc/apache2/sites-available/default.conf /etc/apache2/sites-enabled/default.conf
+ln -fs /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf
 
 # Set the default timezone to UTC and increase upload_max_filesize
 sed -i "s/;date.timezone =/date.timezone = UTC/" /etc/php/7.1/apache2/php.ini
