@@ -151,4 +151,19 @@ echo "postfix postfix/main_mailer_type string 'Internet Site'" | debconf-set-sel
 apt-get install -y postfix
 
 # ==============================================================================
+# Tools
+# ==============================================================================
+
+# Composer
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+
+# Node & NPM
+curl -sL https://deb.nodesource.com/setup_9.x | bash
+apt-get install -y nodejs build-essential
+
+# Gulp
+npm install --global gulp-cli
+
+# ==============================================================================
 # ==============================================================================
