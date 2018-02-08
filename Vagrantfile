@@ -13,8 +13,9 @@ Vagrant.configure("2") do |config|
   end
   
   config.vm.synced_folder "./", "/var/www/#{project_slug}", owner: "vagrant", group: "www-data", mount_options: ["dmode=775,fmode=664"]
-  #config.vm.synced_folder "./", "/var/www/#{project_slug}", type: "nfs"
-  
   config.vm.provision :shell, path: "bootstrap.sh", :args => "Vagrant #{project_slug} #{document_root}"
+  
+  #config.vm.synced_folder "./", "/var/www/#{project_slug}", type: "nfs"
+  #config.vm.provision :shell, inline: ""
   
 end

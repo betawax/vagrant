@@ -18,14 +18,17 @@ DOCUMENT_ROOT=$3
 # System
 # ==============================================================================
 
+# We are no humans 🤖
+export DEBIAN_FRONTEND=noninteractive
+
 # Locales
 apt-get install -y language-pack-de
 
 # Common Tools
 apt-get install -y git
 
-# We are no humans
-export DEBIAN_FRONTEND=noninteractive
+# Aliases
+echo "alias artisan=\"php artisan\"" >> /home/vagrant/.bash_aliases
 
 # ==============================================================================
 # PHP
@@ -100,7 +103,7 @@ rm -f /etc/apache2/sites-available/*
 rm -f /etc/apache2/sites-enabled/*
 rm -rf /var/www/html
 
-# Create and enable a default VHost
+# Create and enable the default VHosts
 echo "$VHOST" > /etc/apache2/sites-available/default.conf
 echo "$VHOST_SSL" > /etc/apache2/sites-available/default-ssl.conf
 ln -fs /etc/apache2/sites-available/default.conf /etc/apache2/sites-enabled/default.conf
