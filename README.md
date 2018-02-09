@@ -1,60 +1,55 @@
 # Vagrant Stack
 
-A Vagrant LAMP Stack for local PHP development, focused on the following tasks:
+Dead simple Vagrant LAMP Stack for local PHP development.
 
-- Get up and running with Vagrant in minutes by using a shell script for provisioning
-- Simple configuration of environment properties like PHP version and web server
-- Easy access to the guest database from the host system, e.g. via Sequel Pro
+✔︎ Get up and running with Vagrant in minutes by using a shell script for provisioning  
+✔︎ Hassle free project setup with a pre-configured private network and synced folder  
+✔︎ Easy access to the guest database from your host system, e.g. via Sequel Pro  
+
+**Operating System**
+
+🚀 Ubuntu Server 14.04 LTS (Trusty Tahr)
+
+**Main Technologies**
+
+🚀 PHP 7+ 🚀 Apache 2 🚀 MySQL 5 🚀 Postfix 🚀 OpenSSL
+
+**Also Included**
+
+🚀 Composer 🚀 NPM 🚀 Gulp
 
 ## Usage
 
-Download the `Vagrantfile` and `bootstrap.sh` to your project directory:
+1. Place the `Vagrantfile` and `bootstrap.sh` into your project directory
+2. Open up the `Vagrantfile` and adjust the few configuration properties
 
-```
-curl -O https://raw.githubusercontent.com/betawax/vagrant-stack/master/Vagrantfile
-curl -O https://raw.githubusercontent.com/betawax/vagrant-stack/master/bootstrap.sh
-```
+	```
+	project_slug  = "foobar"      # Will be used to name the guest database etc.
+	document_root = "public"      # Your document root, e.g. public or web
+	vm_ip_address = "10.10.10.10" # The guest's private network IP address
+	```
 
-Now open up the `Vagrantfile` and define the environment properties for your project:
+3. Get Vagrant up and running
 
-```
-project_name  = "foobar" # Shortcut, no spaces etc.
-php_version   = "5.6"    # 5.6, 5.5, 5.4 or 5.3
-web_server    = "apache" # apache or nginx
-document_root = "public" # e.g. public or web
-```
-
-The project name shortcut will be used to name the project directory and database. Optionally you can also change the IP address of the virtual machine that will be used as your database host.
-
-Next you can open up the `bootstrap.sh` and adjust it to your needs, or leave everything as it is for a default LAMP environment.
-
-And finally when you're done, start up Vagrant:
-
-```
-vagrant up
-```
+	```
+	vagrant up
+	```
 
 ## Access the guest system
 
-By default, the `bootstrap.sh` will create a virtual host, a MySQL database and a database user based on the project name shortcut you defined in the `Vagrantfile`.
+By default, the provisioning script will create two Virtual Hosts (HTTP & HTTPS), a MySQL database and a database user, all named after the project slug you previously defined in the `Vagrantfile`.
 
-You can access the virtual host on your host system by simply adding it to your `/etc/hosts` file:
-
-```
-10.10.10.10 foobar.dev
-```
-
-The MySQL database can be accessed from your host system by using the guest's IP address:
+To access the Virtual Hosts in your browser, add the guest's IP address and your project slug to your `/etc/hosts` file:
 
 ```
-mysql -h 10.10.10.10 -u foobar -pfoobar foobar
+10.10.10.10 foobar.local
 ```
 
-## Resources
+To access the MySQL database from your host system, again use the guest's IP address and your project slug:
 
-- [Laravel Homestead provision script](https://github.com/laravel/settler/blob/master/scripts/provision.sh)
-- [Laravel Homestead nginx server config](https://github.com/laravel/homestead/blob/master/scripts/serve.sh)
-- [Vaprobash pro​visioning scripts](https://github.com/fideloper/Vaprobash)
+```
+mysql -h 10.10.10.10 -u foobar foobar -pfoobar
+```
 
 ## License
 
