@@ -18,7 +18,7 @@ DOCUMENT_ROOT=$3
 # System
 # ==============================================================================
 
-# We are no humans 🤖
+# We are no humans 🧟‍♂️
 export DEBIAN_FRONTEND=noninteractive
 
 # Locales
@@ -132,7 +132,7 @@ service mysql restart
 HOST=$(ifconfig eth1 | grep "inet addr" | awk -F : '{print $2}' | awk '{print $1}' | sed "s/.[0-9]*$/.%/")
 
 # Create a UTF8 database
-mysql -u root -e "CREATE DATABASE $PROJECT_SLUG DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_unicode_ci;"
+mysql -u root -e "CREATE DATABASE $PROJECT_SLUG DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;"
 
 # Create a database user
 mysql -u root -e "GRANT ALL ON $PROJECT_SLUG.* TO '$PROJECT_SLUG'@'localhost' IDENTIFIED BY '$PROJECT_SLUG';"
