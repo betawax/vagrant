@@ -34,11 +34,11 @@ echo "alias artisan=\"php artisan\"" >> /home/vagrant/.bash_aliases
 # PHP
 # ==============================================================================
 
-# PHP 7+ PPA Repository
+# PHP 7.1 Repository
 add-apt-repository -y ppa:ondrej/php
 apt-get update
 
-# PHP 7.1 Common Extensions
+# Common Extensions
 apt-get install -y php7.1-cli
 apt-get install -y php7.1-curl
 apt-get install -y php7.1-gd
@@ -121,11 +121,20 @@ service apache2 restart
 # MySQL
 # ==============================================================================
 
-# MySQL 5.6
-apt-get install -y mysql-server-5.6
+# MySQL 5.7 Repository
+apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 5072E1F5
+echo "deb http://repo.mysql.com/apt/ubuntu/ trusty mysql-5.7" >> /etc/apt/sources.list.d/mysql.list
+apt-get update
+
+# Pre-configure MySQL for a silent install
+debconf-set-selections <<< "mysql-community-server mysql-community-server/root-pass password"
+debconf-set-selections <<< "mysql-community-server mysql-community-server/re-root-pass password"
+
+# MySQL
+apt-get install -y mysql-server
 
 # Allow remote database connections
-sed -i "s/bind-address\t\t= 127.0.0.1/bind-address\t\t= 0.0.0.0/" /etc/mysql/my.cnf
+sed -i "s/bind-address\t= 127.0.0.1/bind-address\t= 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
 service mysql restart
 
 # Get the host address to grant remote access to
@@ -144,8 +153,8 @@ mysql -u root -e "FLUSH PRIVILEGES;"
 # ==============================================================================
 
 # Pre-configure Postfix for a silent install
-echo "postfix postfix/mailname string $PROJECT_SLUG.local" | debconf-set-selections
-echo "postfix postfix/main_mailer_type string 'Internet Site'" | debconf-set-selections
+debconf-set-selections <<< "postfix postfix/mailname string $PROJECT_SLUG.local"
+debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
 
 # Postfix
 apt-get install -y postfix
