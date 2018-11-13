@@ -1,6 +1,6 @@
 # Vagrant Stack
 
-Dead simple Vagrant LAMP Stack for local PHP development.
+Vagrant LAMP Stack for local PHP development.
 
 ✔︎ Get up and running with Vagrant in minutes by using a shell script for provisioning  
 ✔︎ Hassle free project setup with a pre-configured private network and synced folder  
@@ -12,11 +12,11 @@ Dead simple Vagrant LAMP Stack for local PHP development.
 
 **Main Technologies**
 
-🚀 PHP 7+ 🚀 Apache 2 🚀 MySQL 5 🚀 Postfix 🚀 OpenSSL
+🚀 PHP 7.1 🚀 MySQL 5.7 🚀 Apache 2.4 🚀 Postfix 🚀 OpenSSL
 
 **Also Included**
 
-🚀 Composer 🚀 NPM 🚀 Gulp
+🚀 Composer 🚀 NPM
 
 ## Usage
 
