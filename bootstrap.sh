@@ -4,7 +4,7 @@
 # Vagrant
 # ==============================================================================
 
-# Sanity Check 👊
+# Sanity Check 👊🏻
 if [ "$1" != "Vagrant" ]; then
   echo "The provisioning script should not be called directly!"
   exit 1
@@ -160,7 +160,7 @@ debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Si
 apt-get install -y postfix
 
 # ==============================================================================
-# Tools
+# Package Managers
 # ==============================================================================
 
 # Composer
@@ -168,8 +168,8 @@ curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 
 # Node & NPM
-curl -sL https://deb.nodesource.com/setup_9.x | bash
-apt-get install -y nodejs build-essential
+curl -sL https://deb.nodesource.com/setup_10.x | bash
+apt-get install -y nodejs
 
 # ==============================================================================
 # ==============================================================================
