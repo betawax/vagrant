@@ -34,25 +34,22 @@ echo "alias artisan=\"php artisan\"" >> /home/vagrant/.bash_aliases
 # PHP
 # ==============================================================================
 
-# PHP 7.1 Repository
+# PHP 7.3 Repository
 add-apt-repository -y ppa:ondrej/php
 apt-get update
 
 # Common Extensions
-apt-get install -y php7.1-cli
-apt-get install -y php7.1-curl
-apt-get install -y php7.1-gd
-apt-get install -y php7.1-imagick
-apt-get install -y php7.1-json
-apt-get install -y php7.1-mbstring
-apt-get install -y php7.1-mcrypt
-apt-get install -y php7.1-mysql
-apt-get install -y php7.1-tidy
-apt-get install -y php7.1-xdebug
-apt-get install -y php7.1-xml
+apt-get install -y php7.3-cli
+apt-get install -y php7.3-curl
+apt-get install -y php7.3-gd
+apt-get install -y php7.3-json
+apt-get install -y php7.3-mbstring
+apt-get install -y php7.3-mysql
+apt-get install -y php7.3-tidy
+apt-get install -y php7.3-xml
 
 # Set the default timezone to UTC
-sed -i "s/;date.timezone =/date.timezone = UTC/" /etc/php/7.1/cli/php.ini
+sed -i "s/;date.timezone =/date.timezone = UTC/" /etc/php/7.3/cli/php.ini
 
 # ==============================================================================
 # Apache
@@ -87,7 +84,7 @@ EOF
 
 # Apache 2 & Mod PHP
 apt-get install -y apache2
-apt-get install -y libapache2-mod-php7.1
+apt-get install -y libapache2-mod-php7.3
 
 # Common Mods
 a2enmod rewrite
@@ -110,8 +107,8 @@ ln -fs /etc/apache2/sites-available/default.conf /etc/apache2/sites-enabled/defa
 ln -fs /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf
 
 # Set the default timezone to UTC and increase upload_max_filesize
-sed -i "s/;date.timezone =/date.timezone = UTC/" /etc/php/7.1/apache2/php.ini
-sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 32M/" /etc/php/7.1/apache2/php.ini
+sed -i "s/;date.timezone =/date.timezone = UTC/" /etc/php/7.3/apache2/php.ini
+sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 32M/" /etc/php/7.3/apache2/php.ini
 
 # Please Apache 🙄
 printf "\n\nServerName $PROJECT_SLUG" >> /etc/apache2/apache2.conf
